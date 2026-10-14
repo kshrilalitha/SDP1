@@ -1,12 +1,599 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FoodieGo | Food Delivery</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+:root {
+    --gold: #f5c451;
+    --gold-light: #ffe09a;
+    --black: #080807;
+    --card: #151512;
+    --muted: #b8b5ac;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--black);
+    color: #fff;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 6%;
+    background: #10100e;
+    border-bottom: 1px solid #302817;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    color: var(--gold);
+    font-size: 27px;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: var(--gold);
+}
+
+.gold-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: #17120a;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.gold-btn:hover {
+    background: var(--gold-light);
+}
+
+.hero {
+    min-height: 370px;
+    padding: 65px 7%;
+    display: flex;
+    align-items: center;
+    background:
+        linear-gradient(90deg, #080807 20%, #080807e8 47%, #08080735),
+        url("https://images.unsplash.com/photo-1563379091339-03246963d96a?auto=format&fit=crop&w=1600&q=85")
+        center 53% / cover no-repeat;
+}
+
+.hero-content {
+    max-width: 650px;
+}
+
+.eyebrow {
+    color: var(--gold);
+    letter-spacing: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(36px, 5vw, 59px);
+    line-height: 1.13;
+    margin: 18px 0;
+}
+
+.hero h1 span {
+    color: var(--gold);
+}
+
+.hero p {
+    color: #dedbd4;
+    line-height: 1.7;
+    max-width: 500px;
+    margin-bottom: 24px;
+}
+
+.search-box {
+    display: flex;
+    max-width: 560px;
+    padding: 5px;
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    background: #171714;
+}
+
+.search-box input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border: none;
+    outline: none;
+    color: white;
+    background: transparent;
+}
+
+section {
+    padding: 35px 6%;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.section-heading h2 {
+    font-family: Georgia, serif;
+    font-size: 27px;
+}
+
+.section-heading a {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(75px, 1fr));
+    gap: 18px;
+}
+
+.category {
+    text-align: center;
+    cursor: pointer;
+    color: white;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+}
+
+.category img {
+    width: 78px;
+    height: 78px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    margin-bottom: 10px;
+    transition: transform .2s;
+}
+
+.category:hover img {
+    transform: scale(1.07);
+}
+
+.restaurants {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.restaurant {
+    background: var(--card);
+    border: 1px solid #57451e;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform .2s;
+}
+
+.restaurant:hover {
+    transform: translateY(-5px);
+}
+
+.food-image {
+    width: 100%;
+    height: 145px;
+    object-fit: cover;
+    display: block;
+}
+
+.restaurant-info {
+    padding: 14px;
+}
+
+.restaurant-info h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.restaurant-info p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.rating {
+    color: var(--gold);
+    float: right;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #ddd;
+}
+
+.details .gold-btn {
+    padding: 9px 11px;
+    font-size: 12px;
+}
+
+.empty-message {
+    color: var(--muted);
+    padding: 20px 0;
+    grid-column: 1 / -1;
+}
+
+.benefits {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 30px 6%;
+    border-top: 1px solid #302817;
+    background: #11110f;
+}
+
+.benefit {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.benefit .icon {
+    font-size: 30px;
+    color: var(--gold);
+}
+
+.benefit p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: var(--muted);
+    border-top: 1px solid #302817;
+    font-size: 13px;
+}
+
+#cart-count {
+    color: var(--gold);
+}
+
+@media (max-width: 1000px) {
+    .categories {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .restaurants {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 18px 5%;
+    }
+
+    nav {
+        gap: 14px;
+    }
+
+    .hero {
+        padding: 50px 5%;
+    }
+
+    section {
+        padding: 28px 5%;
+    }
+
+    .categories {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .restaurants {
+        grid-template-columns: 1fr;
+    }
+
+    .benefits {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 25px 5%;
+    }
+
+    .section-heading h2 {
+        font-size: 22px;
+    }
+
+    .search-box {
+        flex-wrap: wrap;
+    }
+
+    .search-box input {
+        flex-basis: 100%;
+    }
+}
+</style>
 </head>
+
 <body>
-    <h3 style="color: blue; text-align: center;">This is docker class</h3>
-    <p>This is the skill development session on docker and aws..Conducted by NIE for 5 days.</p>
+
+<header>
+    <div class="logo">♨ FoodieGo</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#restaurants">Restaurants</a>
+        <a href="#categories">Categories</a>
+        <a href="#benefits">About</a>
+    </nav>
+
+    <a href="#restaurants" class="gold-btn">
+        🛒 Cart <span id="cart-count">0</span>
+    </a>
+</header>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <div class="eyebrow">GOOD FOOD. GREAT MOMENTS.</div>
+
+        <h1>
+            Delicious Food<br>
+            <span>Delivered to Your Door</span>
+        </h1>
+
+        <p>
+            Discover the best restaurants, explore your favourite cuisines
+            and enjoy delicious meals delivered fresh to your doorstep.
+        </p>
+
+        <div class="search-box">
+            <input
+                type="text"
+                id="search"
+                placeholder="Search restaurants or cuisines..."
+                aria-label="Search restaurants or cuisines"
+            >
+            <button class="gold-btn" onclick="searchFood()">
+                🔍 Search Food
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="categories">
+    <div class="section-heading">
+        <h2>Popular Categories</h2>
+        <a href="#restaurants">Explore all →</a>
+    </div>
+
+    <div class="categories">
+        <button class="category" onclick="filterFood('Biryani')">
+            <img src="https://images.unsplash.com/photo-1563379091339-03246963d96a?auto=format&fit=crop&w=200&q=80" alt="Biryani">
+            <span>Biryani</span>
+        </button>
+
+        <button class="category" onclick="filterFood('South Indian')">
+            <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=200&q=80" alt="South Indian">
+            <span>South Indian</span>
+        </button>
+
+        <button class="category" onclick="filterFood('North Indian')">
+            <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=200&q=80" alt="North Indian">
+            <span>North Indian</span>
+        </button>
+
+        <button class="category" onclick="filterFood('Chinese')">
+            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=200&q=80" alt="Chinese">
+            <span>Chinese</span>
+        </button>
+
+        <button class="category" onclick="filterFood('Pizza')">
+            <img src="https://images.unsplash.com/photo- pizza" alt="Pizza">
+            <span>Pizza</span>
+        </button>
+
+        <button class="category" onclick="filterFood('Burgers')">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=200&q=80" alt="Burgers">
+            <span>Burgers</span>
+        </button>
+
+        <button class="category" onclick="filterFood('Desserts')">
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=200&q=80" alt="Desserts">
+            <span>Desserts</span>
+        </button>
+
+        <button class="category" onclick="filterFood('Beverages')">
+            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=200&q=80" alt="Beverages">
+            <span>Beverages</span>
+        </button>
+
+        <button class="category" onclick="filterFood('Healthy')">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=200&q=80" alt="Healthy food">
+            <span>Healthy</span>
+        </button>
+    </div>
+</section>
+
+<section id="restaurants">
+    <div class="section-heading">
+        <h2>Top Restaurants Near You</h2>
+        <a href="#restaurants" onclick="showAll(event)">View all →</a>
+    </div>
+
+    <div class="restaurants" id="restaurant-list">
+
+        <article class="restaurant" data-category="Biryani North Indian">
+            <img class="food-image"
+                src="https://images.unsplash.com/photo-1563379091339-03246963d96a?auto=format&fit=crop&w=600&q=80"
+                alt="Biryani">
+            <div class="restaurant-info">
+                <h3>Empire Restaurant <span class="rating">★ 4.5</span></h3>
+                <p>Biryani, North Indian</p>
+                <div class="details">
+                    <span>30–40 min</span>
+                    <span>₹200 for two</span>
+                    <button class="gold-btn" onclick="addToCart('Empire Restaurant')">Order</button>
+                </div>
+            </div>
+        </article>
+
+        <article class="restaurant" data-category="South Indian">
+            <img class="food-image"
+                src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80"
+                alt="South Indian food">
+            <div class="restaurant-info">
+                <h3>MTR <span class="rating">★ 4.3</span></h3>
+                <p>South Indian, Breakfast</p>
+                <div class="details">
+                    <span>20–30 min</span>
+                    <span>₹150 for two</span>
+                    <button class="gold-btn" onclick="addToCart('MTR')">Order</button>
+                </div>
+            </div>
+        </article>
+
+        <article class="restaurant" data-category="Burgers">
+            <img class="food-image"
+                src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80"
+                alt="Burger and fries">
+            <div class="restaurant-info">
+                <h3>Burger Hub <span class="rating">★ 4.2</span></h3>
+                <p>Burgers, Fast Food</p>
+                <div class="details">
+                    <span>25–35 min</span>
+                    <span>₹250 for two</span>
+                    <button class="gold-btn" onclick="addToCart('Burger Hub')">Order</button>
+                </div>
+            </div>
+        </article>
+
+        <article class="restaurant" data-category="Pizza">
+            <img class="food-image"
+                src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=600&q=80"
+                alt="Pizza">
+            <div class="restaurant-info">
+                <h3>Pizza Corner <span class="rating">★ 4.4</span></h3>
+                <p>Pizza, Italian</p>
+                <div class="details">
+                    <span>25–35 min</span>
+                    <span>₹300 for two</span>
+                    <button class="gold-btn" onclick="addToCart('Pizza Corner')">Order</button>
+                </div>
+            </div>
+        </article>
+
+    </div>
+    <p id="no-results" hidden style="margin-top:20px;color:#f5c451">
+        No matching restaurants found. Try another search.
+    </p>
+</section>
+
+<section class="benefits" id="benefits">
+    <div class="benefit">
+        <div class="icon">♨</div>
+        <div><strong>Easy Ordering</strong><p>Simple and secure</p></div>
+    </div>
+
+    <div class="benefit">
+        <div class="icon">▤</div>
+        <div><strong>Multiple Payments</strong><p>UPI, cards and COD</p></div>
+    </div>
+
+    <div class="benefit">
+        <div class="icon">♢</div>
+        <div><strong>Safe & Hygienic</strong><p>Quality you can trust</p></div>
+    </div>
+
+    <div class="benefit">
+        <div class="icon">☏</div>
+        <div><strong>Customer Support</strong><p>We're here to help</p></div>
+    </div>
+</section>
+
+<footer>
+    <div class="logo">FoodieGo</div>
+    <p style="margin-top:10px">Good food, delivered with love.</p>
+    <p style="margin-top:8px">© 2026 FoodieGo. Demo website.</p>
+</footer>
+
+<script>
+let cart = 0;
+
+function addToCart(restaurant) {
+    cart++;
+    document.getElementById("cart-count").textContent = cart;
+    alert(restaurant + " added to your demo cart!");
+}
+
+function filterFood(category) {
+    document.getElementById("search").value = category;
+    searchFood();
+    document.getElementById("restaurants").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+function searchFood() {
+    const query = document.getElementById("search")
+        .value.toLowerCase().trim();
+
+    const cards = document.querySelectorAll(".restaurant");
+    let visible = 0;
+
+    cards.forEach(card => {
+        const text = (
+            card.innerText + " " + card.dataset.category
+        ).toLowerCase();
+
+        const matches = text.includes(query);
+        card.style.display = matches ? "" : "none";
+
+        if (matches) visible++;
+    });
+
+    document.getElementById("no-results").hidden = visible > 0;
+}
+
+function showAll(event) {
+    event.preventDefault();
+    document.getElementById("search").value = "";
+    searchFood();
+}
+</script>
+
 </body>
 </html>
